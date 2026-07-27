@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vanshika Turakhia — Systems · Backend · AI Infrastructure</title>
+<meta name="description" content="C++ systems programming (41K req/sec epoll server, lock-free queues), LLM observability platforms, RAG infrastructure. Open source: Valkey, KubeVela."/>
+<meta property="og:title" content="Vanshika Turakhia"/>
+<meta property="og:description" content="Systems · Backend · AI Infrastructure. C++ epoll servers, lock-free data structures, LLM observability, multi-tenant RAG. Contributor to Valkey and KubeVela (CNCF)."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://vanshika.dev"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vanshika Turakhia"/>
+<meta name="twitter:description" content="Systems · Backend · AI Infrastructure"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0f0e0a}
+#canvas{position:fixed;inset:0;display:block}
+#cursor{position:fixed;width:8px;height:8px;background:#d4a847;border-radius:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .12s,height .12s}
+#cursor.hover{width:36px;height:36px;background:rgba(212,168,71,0.08);border:1px solid rgba(212,168,71,0.55)}
+#boot{position:fixed;inset:0;z-index:500;background:#0f0e0a;display:flex;align-items:center;justify-content:center;transition:opacity .4s}
+#boot.done{opacity:0;pointer-events:none}
+#boot-text{font-family:"Space Mono",monospace;font-size:12px;line-height:2;color:rgba(212,168,71,0.8);min-width:280px}
+#boot-text .ok{color:rgba(238,218,128,1)}
+#boot-cursor{display:inline-block;width:7px;height:13px;background:#d4a847;vertical-align:text-bottom;animation:bblink .8s step-end infinite}
+@keyframes bblink{0%,100%{opacity:1}50%{opacity:0}}
+@media (prefers-reduced-motion: reduce){#crt{animation:none}#hero-scroll{animation:none;opacity:.5}.glitch-in{animation:none}}
+nav{position:fixed;top:0;left:0;right:0;z-index:150;display:flex;align-items:center;justify-content:space-between;padding:28px 40px;font-family:"Space Mono",monospace}
+#nav-name{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:rgba(235,210,140,0.9)}
+#nav-links{display:flex;gap:28px}
+.nav-link{background:none;border:none;cursor:pointer;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(212,168,71,0.45);transition:color .2s;padding:4px 0}
+.nav-link:hover{color:#d4a847}
+.nav-link.active{color:#eedfa0;border-bottom:1px solid rgba(212,168,71,0.5)}
+#hero{position:fixed;inset:0;z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none;transition:opacity .6s;font-family:"Space Grotesk",sans-serif}
+#hero-kicker{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:rgba(212,168,71,0.6);margin-bottom:18px}
+#hero h1{font-size:clamp(48px,8vw,104px);font-weight:700;letter-spacing:-.03em;color:#f5e8b4;line-height:.95;text-align:center}
+#hero-tag{margin-top:22px;font-size:14px;color:rgba(200,184,120,0.6);letter-spacing:.06em;font-weight:300}
+#hero-scroll{position:absolute;bottom:44px;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:rgba(212,168,71,0.35);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:.8}}
+#outro{position:fixed;inset:0;z-index:90;display:flex;align-items:stretch;justify-content:flex-start;pointer-events:none;opacity:0;transition:opacity .6s;font-family:"Space Grotesk",sans-serif}
+#outro.visible{pointer-events:auto}
+#outro-inner{width:min(620px,94vw);height:100%;overflow-y:auto;padding:110px 56px 60px;background:linear-gradient(90deg,rgba(13,12,8,0.96) 0%,rgba(13,12,8,0.92) 75%,rgba(13,12,8,0) 100%);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.outro-section{margin-bottom:48px}
+.outro-label{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:rgba(212,168,71,0.55);margin-bottom:18px}
+.outro-item{border-left:1px solid rgba(212,168,71,0.25);padding:4px 0 4px 20px;margin-bottom:22px}
+.outro-item h3{font-size:17px;font-weight:500;color:#eedfa0;margin-bottom:4px;letter-spacing:.01em}
+.outro-item .meta{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;color:rgba(212,168,71,0.5);margin-bottom:8px;text-transform:uppercase}
+.outro-item p{font-size:13px;color:rgba(220,205,160,0.6);line-height:1.7}
+.stat-row{display:flex;gap:36px;flex-wrap:wrap}
+.stat{padding:4px 0}
+.stat .num{font-size:34px;font-weight:700;color:#f5e8b4;letter-spacing:-.02em;font-family:"Space Grotesk",sans-serif}
+.stat .lbl{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,168,71,0.5);margin-top:4px}
+.skill-line{margin-bottom:10px;font-size:13px;line-height:1.7}
+.skill-line .k{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(212,168,71,0.55);margin-right:12px}
+.skill-line .v{color:rgba(220,205,160,0.65)}
+#contact-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.contact-link{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#d4a847;text-decoration:none;padding:11px 18px;border:1px solid rgba(212,168,71,0.35);transition:background .2s,border-color .2s}
+.contact-link:hover{background:rgba(212,168,71,0.08);border-color:rgba(212,168,71,0.7)}
+#scroll-track{position:fixed;right:32px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;align-items:center;gap:6px}
+.scroll-dot{width:3px;height:3px;background:rgba(212,168,71,0.2);transition:background .3s,transform .3s}
+.scroll-dot.active{background:#d4a847;transform:scaleX(4)}
+#side-panel{position:fixed;top:0;right:-420px;width:380px;height:100vh;z-index:200;background:rgba(12,11,8,0.92);border-left:1px solid rgba(212,168,71,0.2);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);transition:right .45s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column;font-family:"Space Grotesk",sans-serif;overflow:hidden}
+#side-panel.open{right:0}
+#side-panel::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(212,168,71,0.018) 3px,rgba(212,168,71,0.018) 4px)}
+#side-panel::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(212,168,71,0.7),transparent)}
+#sp-inner{position:relative;z-index:1;padding:36px 32px 40px;height:100%;overflow-y:auto;display:flex;flex-direction:column}
+#sp-back{display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(212,168,71,0.45);padding:0;margin-bottom:40px;transition:color .2s;width:fit-content}
+#sp-back:hover{color:#d4a847}
+#sp-back::before{content:"back";font-size:10px;letter-spacing:.2em}
+#sp-index{font-family:"Space Mono",monospace;font-size:10px;color:rgba(212,168,71,0.4);letter-spacing:.25em;margin-bottom:12px}
+#sp-title{font-size:40px;font-weight:700;color:#eedfa0;letter-spacing:-.02em;line-height:1;margin-bottom:6px}
+#sp-sub{font-size:13px;color:rgba(200,184,120,0.55);letter-spacing:.04em;margin-bottom:28px}
+#sp-divider{width:44px;height:1px;background:rgba(212,168,71,0.45);margin-bottom:28px}
+#sp-desc{font-size:14px;color:rgba(220,205,160,0.65);line-height:1.8;margin-bottom:28px;flex:1}
+#sp-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:32px}
+.sp-tag{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:5px 10px;border:1px solid rgba(212,168,71,0.2);color:rgba(212,168,71,0.6)}
+#sp-link{display:inline-flex;align-items:center;gap:10px;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#d4a847;text-decoration:none;padding:11px 18px;border:1px solid rgba(212,168,71,0.35);transition:background .2s,border-color .2s;width:fit-content}
+#sp-link:hover{background:rgba(212,168,71,0.08);border-color:rgba(212,168,71,0.7)}
+#crt{position:fixed;inset:0;z-index:300;pointer-events:none}
+#crt::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.15) 2px,rgba(0,0,0,0.15) 4px)}
+#crt::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,0.55) 100%)}
+@keyframes flicker{0%,89%,91%,100%{opacity:1}90%{opacity:.94}92%{opacity:.98}}
+#crt{animation:flicker 7s infinite}
+@keyframes glitch-title{0%{clip-path:inset(0 0 96% 0);transform:translateX(-5px)}15%{clip-path:inset(15% 0 55% 0);transform:translateX(5px)}30%{clip-path:inset(45% 0 25% 0);transform:translateX(-3px)}50%{clip-path:inset(75% 0 8% 0);transform:translateX(2px)}65%{clip-path:inset(0 0 0 0);transform:translateX(0)}100%{clip-path:inset(0 0 0 0);transform:translateX(0)}}
+.glitch-in{animation:glitch-title .3s steps(1) forwards}
+@media (max-width:600px){nav{padding:20px}#nav-links{gap:14px}#side-panel{width:100vw;right:-100vw}#outro-inner{padding:40px 20px}}
+</style>
+</head>
+<body>
+<div id="boot"><div id="boot-text"></div></div>
+<canvas id="canvas"></canvas>
+<div id="cursor"></div>
+<nav>
+  <div id="nav-name">Vanshika Turakhia</div>
+  <div id="nav-links">
+    <button class="nav-link" data-goto="0">Top</button>
+    <button class="nav-link" data-goto="projects">Projects</button>
+    <button class="nav-link" data-goto="end">About</button>
+  </div>
+</nav>
+<div id="hero">
+  <div id="hero-kicker">Systems · Backend · AI Infrastructure</div>
+  <h1>Vanshika<br/>Turakhia</h1>
+  <div id="hero-tag">I build things that are fast and things that think</div>
+  <div id="hero-scroll">scroll</div>
+</div>
+<div id="outro">
+  <div id="outro-inner">
+    <div class="outro-section">
+      <div class="outro-label">Open Source</div>
+      <div class="outro-item">
+        <h3>Valkey</h3>
+        <div class="meta">Redis fork · C</div>
+        <p>Implemented a trusted connection pool (trusted-sources, trust-unix-sockets, trusted-maxclients) allowing admin and monitoring clients to connect when maxclients is exhausted — preventing operational deadlock in production.</p>
+      </div>
+      <div class="outro-item">
+        <h3>KubeVela — CNCF</h3>
+        <div class="meta">Go · Kubernetes</div>
+        <p>Added lifecycle management APIs enabling explicit goroutine shutdown, preventing resource leaks in long-running controller processes. Shortlisted for CNCF LFX Mentorship to implement LRU cache eviction for native Helm providers.</p>
+      </div>
+    </div>
+    <div class="outro-section">
+      <div class="outro-label">Competitive Programming</div>
+      <div class="stat-row">
+        <div class="stat"><div class="num">1458</div><div class="lbl">CF max rating · Specialist</div></div>
+        <div class="stat"><div class="num">300+</div><div class="lbl">Problems solved</div></div>
+      </div>
+    </div>
+    <div class="outro-section">
+      <div class="outro-label">Stack</div>
+      <div class="skill-line"><span class="k">Languages</span><span class="v">C++20 · Go · TypeScript · Python · SQL</span></div>
+      <div class="skill-line"><span class="k">Systems</span><span class="v">epoll · mmap · sendfile · std::atomic · lock-free structures · ASan/TSan · perf</span></div>
+      <div class="skill-line"><span class="k">Infra</span><span class="v">PostgreSQL · pgvector · Redis · Kafka · ClickHouse · Docker · GCP · Grafana</span></div>
+      <div class="skill-line"><span class="k">AI / ML</span><span class="v">RAG systems · vector search · LLM observability · reinforcement learning</span></div>
+    </div>
+    <div class="outro-section">
+      <div class="outro-label">Contact</div>
+      <div id="contact-row">
+        <a class="contact-link" href="mailto:vanshikaturakhia@gmail.com">Email</a>
+        <a class="contact-link" href="https://github.com/vansvan17" target="_blank" rel="noopener">GitHub</a>
+        <a class="contact-link" href="https://www.linkedin.com/in/vanshika-turakhia-178850239/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="contact-link" href="https://codeforces.com/profile/vanshicuh" target="_blank" rel="noopener">Codeforces</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="scroll-track"></div>
+<div id="side-panel">
+  <div id="sp-inner">
+    <button id="sp-back" onclick="closePanel()"></button>
+    <div id="sp-index"></div>
+    <div id="sp-title"></div>
+    <div id="sp-sub"></div>
+    <div id="sp-divider"></div>
+    <div id="sp-desc"></div>
+    <div id="sp-tags"></div>
+    <a id="sp-link" href="#" target="_blank" rel="noopener">View source</a>
+  </div>
+</div>
+<div id="crt"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const GOLD=0xd4a847,GOLD2=0xeeda80,BLUE=0x7ab8d4;
+const REDUCED_MOTION=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function boot(){const el=document.getElementById("boot-text"),overlay=document.getElementById("boot"),lines=[["mounting /projects","ok"],["spawning renderer","ok"],["vanshika.dev",""]];if(REDUCED_MOTION){overlay.classList.add("done");return}let html="",li=0;function next(){if(li>=lines.length){setTimeout(()=>overlay.classList.add("done"),250);return}const[text,status]=lines[li];html+=text+(status?' <span class="ok">['+status+"]</span>":' <span id="boot-cursor"></span>')+"<br/>";el.innerHTML=html;li++;setTimeout(next,280)}next();const skip=()=>{overlay.classList.add("done");window.removeEventListener("keydown",skip);window.removeEventListener("click",skip)};window.addEventListener("keydown",skip);window.addEventListener("click",skip)})();
+const PROJECTS=[
+{title:"Pulse",sub:"Edge-triggered epoll HTTP/1.1 server",desc:"Single-threaded epoll reactor in C++20 with HTTP/1.1 keep-alive and pipelining. Zero-copy serving via sendfile(2), SO_REUSEPORT multi-loop scaling. 41,000+ req/sec on one core at p99 5ms with zero failures — validated clean under AddressSanitizer.",tags:["C++20","Linux","epoll","sendfile"],url:"https://github.com/vansvan17/pulse"},
+{title:"Argus",sub:"LLM observability & evaluation platform",desc:"End-to-end observability for LLM calls across OpenAI, Anthropic, and Gemini — latency, token usage, cost, and output quality per model and prompt version. Events stream through Kafka into ClickHouse for sub-second analytics, surfaced in Grafana with per-provider cost breakdowns and drift alerts.",tags:["Python","Kafka","ClickHouse","FastAPI"],url:"https://github.com/vansvan17/argus"},
+{title:"Confess",sub:"Multi-tenant RAG platform",desc:"Isolated workspaces with per-tenant vector namespacing via pgvector. Full ingestion-to-retrieval pipeline with confidence-aware scoring, refusal-based answering, and automated knowledge-gap detection by clustering failed queries. BullMQ workers, Redis caching, full observability stack.",tags:["TypeScript","pgvector","Redis","BullMQ"],url:"https://github.com/vansvan17/confess"},
+{title:"MPMC Queue",sub:"Lock-free multi-producer multi-consumer queue",desc:"Michael–Scott queue via compare_exchange_weak with cooperative tail advancement for guaranteed lock-free progress. Cache-line padded head/tail (alignas 64) to kill false sharing. ~105ns per op, zero item loss across 400K items under ThreadSanitizer.",tags:["C++20","std::atomic","lock-free"],url:"https://github.com/vansvan17/lock-free-mpmc-queue"},
+{title:"Allocator",sub:"First-fit free-list arena allocator",desc:"Custom heap allocator over raw mmap with in-band metadata headers and boundary-tag coalescing — adjacent free blocks merge in O(1). Block state encoded via bitwise tagging in the low bits of size fields. 17ns per alloc/free cycle on 64-byte blocks.",tags:["C++","mmap","memory"],url:"https://github.com/vansvan17/allocator"},
+{title:"CPForge",sub:"Competitive programming practice platform",desc:"Weighted weakness-analysis engine computing per-topic fail rates relative to rating and difficulty, powering a recommendation pipeline over the Codeforces problemset. Paginated submission fetching (10K+ per user), Firestore persistence, deployed on Vercel.",tags:["React","Firebase","Codeforces API"],url:"https://github.com/vansvan17/cpforge"},
+];
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById("canvas"),antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+renderer.setClearColor(0x0f0e0a,1);renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
+const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(52,innerWidth/innerHeight,0.1,300);
+scene.add(new THREE.AmbientLight(0xffe8a0,0.14));
+const key=new THREE.DirectionalLight(0xfff5d0,0.9);key.position.set(8,10,10);scene.add(key);
+const goldFill=new THREE.PointLight(0xd4a847,2.0,32);goldFill.position.set(-5,3,8);scene.add(goldFill);
+const blueFill=new THREE.PointLight(0x7ab8d4,0.7,28);blueFill.position.set(7,5,-8);scene.add(blueFill);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(60,60),new THREE.MeshPhysicalMaterial({color:0x0d0c08,roughness:0.06,metalness:0.15}));
+floor.rotation.x=-Math.PI/2;floor.position.y=-8;scene.add(floor);
+const grid=new THREE.GridHelper(60,30,0x2e2410,0x1a1508);grid.position.y=-7.98;scene.add(grid);
+const pillarGroup=new THREE.Group();scene.add(pillarGroup);
+const N=PROJECTS.length,RADIUS=5,STEP_H=2.8,SPIRAL=Math.PI*2.0,CARD_OUTSET=5,STAIR_TOP=(N*STEP_H)/2+4,shaftH=N*STEP_H+14;
+const shaft=new THREE.Mesh(new THREE.BoxGeometry(1.4,shaftH,1.4),new THREE.MeshPhysicalMaterial({color:0x1a1508,roughness:0.05,transparent:true,opacity:0.78,side:THREE.DoubleSide}));
+shaft.position.y=shaftH/2-8;pillarGroup.add(shaft);
+const shaftEdge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.4,shaftH,1.4)),new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.8}));
+shaftEdge.position.y=shaftH/2-8;pillarGroup.add(shaftEdge);
+for(let y=-6;y<shaftH-8;y+=3){const b=new THREE.Mesh(new THREE.BoxGeometry(1.65,0.05,1.65),new THREE.MeshBasicMaterial({color:GOLD,transparent:true,opacity:0.45}));b.position.y=y;pillarGroup.add(b)}
+const capY=shaftH-8+0.14;
+const cap=new THREE.Mesh(new THREE.BoxGeometry(2.2,0.28,2.2),new THREE.MeshPhysicalMaterial({color:0x1e1a08,roughness:0.1,metalness:0.3}));cap.position.y=capY;pillarGroup.add(cap);
+const capEdge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2.2,0.28,2.2)),new THREE.LineBasicMaterial({color:GOLD2,transparent:true,opacity:0.9}));capEdge.position.y=capY;pillarGroup.add(capEdge);
+const base=new THREE.Mesh(new THREE.BoxGeometry(3.0,0.38,3.0),new THREE.MeshPhysicalMaterial({color:0x161408,roughness:0.2,metalness:0.25}));base.position.y=-7.81;pillarGroup.add(base);
+const baseEdge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(3.0,0.38,3.0)),new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.65}));baseEdge.position.y=-7.81;pillarGroup.add(baseEdge);
+const stairGroup=new THREE.Group();scene.add(stairGroup);
+const stepCards=[],holoMeshes=[],holoBack=[];
+function makeLabel(proj,i,mirrored){const lc=document.createElement("canvas");lc.width=512;lc.height=352;const ctx=lc.getContext("2d");ctx.clearRect(0,0,512,352);if(mirrored){ctx.save();ctx.translate(512,0);ctx.scale(-1,1)}for(let sl=0;sl<352;sl+=4){ctx.fillStyle="rgba(212,168,71,0.03)";ctx.fillRect(0,sl,512,2)}ctx.font='400 15px "Space Mono",monospace';ctx.fillStyle=mirrored?"rgba(212,168,71,0.5)":"rgba(212,168,71,0.95)";ctx.fillText((i+1)+" / "+PROJECTS.length,22,34);ctx.font='700 58px "Space Grotesk",sans-serif';ctx.fillStyle=mirrored?"rgba(245,232,180,0.55)":"rgba(255,245,200,1.0)";ctx.fillText(proj.title,22,108);ctx.fillStyle=mirrored?"rgba(212,168,71,0.4)":"#ffda70";ctx.fillRect(22,120,56,2);ctx.font='400 19px "Space Grotesk",sans-serif';ctx.fillStyle=mirrored?"rgba(200,184,120,0.5)":"rgba(245,230,180,1.0)";ctx.fillText(proj.sub,22,152);ctx.font='400 14px "Space Mono",monospace';ctx.fillStyle=mirrored?"rgba(212,168,71,0.4)":"rgba(255,210,130,0.95)";ctx.fillText(proj.tags.slice(0,3).join("  ·  "),22,192);ctx.font='400 11px "Space Mono",monospace';ctx.fillStyle=mirrored?"rgba(212,168,71,0.2)":"rgba(212,168,71,0.7)";ctx.fillText(mirrored?proj.url.replace("https://",""):"click for details",22,320);if(mirrored)ctx.restore();return new THREE.CanvasTexture(lc)}
+PROJECTS.forEach((proj,i)=>{const t=i/(N-1),angle=t*SPIRAL-Math.PI*0.5,y=i*STEP_H-(N*STEP_H)/2+2,tx=Math.cos(angle)*RADIUS,tz=Math.sin(angle)*RADIUS;
+const treadGeo=new THREE.BoxGeometry(3.4,0.12,1.6);const tread=new THREE.Mesh(treadGeo,new THREE.MeshPhysicalMaterial({color:0x100f08,roughness:0.06,transparent:true,opacity:0.85}));tread.position.set(tx,y,tz);tread.rotation.y=-angle+Math.PI/2;stairGroup.add(tread);
+const treadEdge=new THREE.LineSegments(new THREE.EdgesGeometry(treadGeo),new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.55}));treadEdge.position.copy(tread.position);treadEdge.rotation.copy(tread.rotation);stairGroup.add(treadEdge);
+const cx=Math.cos(angle)*CARD_OUTSET,cz=Math.sin(angle)*CARD_OUTSET;
+const cardW=3.4,cardH=2.2,cardD=0.03,cardGeo=new THREE.BoxGeometry(cardW,cardH,cardD);
+const card=new THREE.Mesh(cardGeo,new THREE.MeshPhysicalMaterial({color:0xd4a847,transparent:true,opacity:0.04,side:THREE.DoubleSide}));card.position.set(cx,y+1.1,cz);card.rotation.y=-angle;card.userData={projectIndex:i};stairGroup.add(card);stepCards.push(card);
+const cardEdge=new THREE.LineSegments(new THREE.EdgesGeometry(cardGeo),new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.9}));cardEdge.position.copy(card.position);cardEdge.rotation.copy(card.rotation);stairGroup.add(cardEdge);
+const innerEdge=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(cardW-0.12,cardH-0.12,cardD)),new THREE.LineBasicMaterial({color:BLUE,transparent:true,opacity:0.28}));innerEdge.position.copy(card.position);innerEdge.rotation.copy(card.rotation);stairGroup.add(innerEdge);
+const frontTex=makeLabel(proj,i,false),frontLabel=new THREE.Mesh(new THREE.PlaneGeometry(cardW*0.92,cardH*0.92),new THREE.MeshBasicMaterial({map:frontTex,transparent:true,depthWrite:false,side:THREE.FrontSide}));frontLabel.position.copy(card.position);frontLabel.rotation.copy(card.rotation);frontLabel.position.x+=Math.cos(angle)*0.022;frontLabel.position.z+=Math.sin(angle)*0.022;frontLabel.userData={glitchTimer:Math.random()*5,baseX:frontLabel.position.x,baseY:card.position.y,baseZ:frontLabel.position.z,i};stairGroup.add(frontLabel);holoMeshes.push(frontLabel);
+const backTex=makeLabel(proj,i,true),backLabel=new THREE.Mesh(new THREE.PlaneGeometry(cardW*0.92,cardH*0.92),new THREE.MeshBasicMaterial({map:backTex,transparent:true,depthWrite:false,side:THREE.BackSide}));backLabel.position.copy(card.position);backLabel.rotation.copy(card.rotation);backLabel.position.x-=Math.cos(angle)*0.022;backLabel.position.z-=Math.sin(angle)*0.022;stairGroup.add(backLabel);holoBack.push(backLabel);
+const supportH=y+8,support=new THREE.Mesh(new THREE.BoxGeometry(0.03,supportH,0.03),new THREE.MeshBasicMaterial({color:0x1e1a08,transparent:true,opacity:0.6}));support.position.set(tx,y-supportH/2,tz);stairGroup.add(support)});
+const railPts=[];for(let i=0;i<N;i++){const tt=i/(N-1),angle=tt*SPIRAL-Math.PI*0.5,y=i*STEP_H-(N*STEP_H)/2+2+1.1;railPts.push(new THREE.Vector3(Math.cos(angle)*CARD_OUTSET,y,Math.sin(angle)*CARD_OUTSET))}
+const railGeo=new THREE.BufferGeometry().setFromPoints(new THREE.CatmullRomCurve3(railPts).getPoints(160));scene.add(new THREE.Line(railGeo,new THREE.LineBasicMaterial({color:GOLD,transparent:true,opacity:0.5})));
+const track=document.getElementById("scroll-track");for(let i=0;i<N;i++){const d=document.createElement("div");d.className="scroll-dot";d.id="dot-"+i;track.appendChild(d)}
+const INTRO_LEN=300,PROJ_LEN=(N-1)*220,OUTRO_LEN=300,INTRO_END=INTRO_LEN,PROJ_END=INTRO_LEN+PROJ_LEN,MAX_SCROLL=INTRO_LEN+PROJ_LEN+OUTRO_LEN;
+let scrollY=0,targetScroll=0;
+window.addEventListener("wheel",e=>{targetScroll=Math.max(0,Math.min(MAX_SCROLL,targetScroll+e.deltaY*0.8))},{passive:true});let lastTY=0;
+window.addEventListener("touchstart",e=>{lastTY=e.touches[0].clientY});window.addEventListener("touchmove",e=>{const dy=lastTY-e.touches[0].clientY;lastTY=e.touches[0].clientY;targetScroll=Math.max(0,Math.min(MAX_SCROLL,targetScroll+dy*2))},{passive:true});
+document.querySelectorAll(".nav-link").forEach(btn=>{btn.addEventListener("click",()=>{const g=btn.dataset.goto;if(g==="0")targetScroll=0;else if(g==="projects")targetScroll=INTRO_END+10;else if(g==="end")targetScroll=MAX_SCROLL})});
+const cursorEl=document.getElementById("cursor"),mouse=new THREE.Vector2(-9,-9);
+window.addEventListener("mousemove",e=>{cursorEl.style.left=e.clientX+"px";cursorEl.style.top=e.clientY+"px";mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1});
+function openPanel(i){const p=PROJECTS[i];document.getElementById("sp-index").textContent=(i+1)+" of "+N;const titleEl=document.getElementById("sp-title");titleEl.textContent=p.title;titleEl.className="glitch-in";setTimeout(()=>titleEl.className="",350);document.getElementById("sp-sub").textContent=p.sub;document.getElementById("sp-desc").textContent=p.desc;document.getElementById("sp-tags").innerHTML=p.tags.map(t=>'<span class="sp-tag">'+t+"</span>").join("");document.getElementById("sp-link").href=p.url;document.getElementById("side-panel").classList.add("open")}
+function closePanel(){document.getElementById("side-panel").classList.remove("open")}window.closePanel=closePanel;
+window.addEventListener("click",e=>{if(document.getElementById("side-panel").contains(e.target))return;if(e.target.closest("nav")||e.target.closest("#outro"))return;raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObjects(stepCards);if(hits.length)openPanel(hits[0].object.userData.projectIndex)});
+const raycaster=new THREE.Raycaster();
+window.addEventListener("resize",()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+const heroEl=document.getElementById("hero"),outroEl=document.getElementById("outro"),clock=new THREE.Clock();let hoveredCard=null;
+window.addEventListener("keydown",e=>{if(e.key==="Escape"){closePanel();return}const stepFwd=e.key==="ArrowDown"||e.key==="ArrowRight"||e.key==="j",stepBack=e.key==="ArrowUp"||e.key==="ArrowLeft"||e.key==="k";if(stepFwd||stepBack){e.preventDefault();const projT=Math.max(0,Math.min(1,(targetScroll-INTRO_END)/PROJ_LEN));let idx=Math.round(projT*(N-1));if(targetScroll<INTRO_END)idx=-1;idx+=stepFwd?1:-1;if(idx<0){targetScroll=0;return}if(idx>N-1){targetScroll=MAX_SCROLL;return}targetScroll=INTRO_END+(idx/(N-1))*PROJ_LEN;return}if(e.key==="Enter"){if(targetScroll<=INTRO_END||targetScroll>PROJ_END)return;const projT=Math.max(0,Math.min(1,(targetScroll-INTRO_END)/PROJ_LEN));openPanel(Math.round(projT*(N-1)))}});
+function animate(){requestAnimationFrame(animate);const t=clock.getElapsedTime();scrollY+=(targetScroll-scrollY)*0.06;const heroT=Math.min(1,scrollY/INTRO_LEN),projT=Math.max(0,Math.min(1,(scrollY-INTRO_END)/PROJ_LEN)),outroT=Math.max(0,Math.min(1,(scrollY-PROJ_END)/OUTRO_LEN));heroEl.style.opacity=String(1-heroT);outroEl.style.opacity=String(outroT);outroEl.classList.toggle("visible",outroT>0.5);let camAngle,camRadius,camY,lookY;if(scrollY<=INTRO_END){const topY=STAIR_TOP+2;camAngle=0.1+heroT*0.15;camRadius=9+heroT*9;camY=topY-heroT*(topY-8);lookY=camY-2}else if(scrollY<=PROJ_END){const ct=Math.min(1,projT*1.25);camAngle=Math.PI/2+ct*Math.PI*2.0+stairGroup.rotation.y;camRadius=18-ct*2;camY=10-ct*(N*STEP_H*0.92);lookY=camY-1.5}else{const a0=Math.PI/2+Math.PI*2.0;camAngle=a0+outroT*0.4;camRadius=16+outroT*6;camY=(8-N*STEP_H*0.75)+outroT*8;lookY=camY-3}camera.position.set(Math.sin(camAngle)*camRadius,camY,Math.cos(camAngle)*camRadius);camera.lookAt(0,lookY,0);if(outroT>0)camera.setViewOffset(innerWidth,innerHeight,-outroT*innerWidth*0.28,0,innerWidth,innerHeight);if(!REDUCED_MOTION){pillarGroup.rotation.y=t*0.025;stairGroup.rotation.y=t*0.025}const activeStep=Math.round(Math.min(1,projT*1.25)*(N-1)),inProjects=scrollY>INTRO_END&&scrollY<=PROJ_END;for(let i=0;i<N;i++){const d=document.getElementById("dot-"+i);if(d)d.className="scroll-dot"+(inProjects&&i===activeStep?" active":"")}raycaster.setFromCamera(mouse,camera);const hits=raycaster.intersectObjects(stepCards);if(hits.length){const c=hits[0].object;if(hoveredCard!==c){if(hoveredCard)hoveredCard.material.opacity=0.04;hoveredCard=c}hoveredCard.material.opacity=0.11+Math.sin(t*4)*0.03;cursorEl.classList.add("hover")}else{if(hoveredCard){hoveredCard.material.opacity=0.04;hoveredCard=null}cursorEl.classList.remove("hover")}holoMeshes.forEach((mesh,i)=>{if(REDUCED_MOTION){mesh.material.opacity=0.95;return}mesh.userData.glitchTimer-=0.016;if(mesh.userData.glitchTimer<=0){mesh.userData.glitchTimer=2.5+Math.random()*7;mesh.userData.glitching=true;mesh.userData.glitchEnd=t+0.08+Math.random()*0.1}if(mesh.userData.glitching){if(t<mesh.userData.glitchEnd){mesh.position.x=mesh.userData.baseX+(Math.random()-0.5)*0.09;mesh.position.y=mesh.userData.baseY+(Math.random()-0.5)*0.05;mesh.material.opacity=0.3+Math.random()*0.7}else{mesh.userData.glitching=false;mesh.position.set(mesh.userData.baseX,mesh.userData.baseY,mesh.userData.baseZ);mesh.material.opacity=1.0}}else{mesh.material.opacity=0.85+Math.sin(t*1.6+i*2.1)*0.1}});holoBack.forEach((mesh,i)=>{mesh.material.opacity=REDUCED_MOTION?0.35:0.3+Math.sin(t*1.2+i*1.7)*0.07});renderer.render(scene,camera)}animate();
+</script>
+</body>
+</html>
